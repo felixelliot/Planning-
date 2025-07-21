@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Pernikahan Kami</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Tambahkan font baru untuk judul hero dan isi Kisah Kami -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Great+Vibes&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfaf6; /* Warna latar belakang sangat lembut, mendekati putih krem */
+            color: #5a5a5a; /* Warna teks abu-abu lembut */
+        }
+        .hero-section {
+            /* Menggunakan gambar latar belakang yang lebih aesthetic */
+            background-image: url('https://source.unsplash.com/random/1920x600/?wedding,flowers,aesthetic'); /* URL gambar yang lebih stabil */
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden; /* Pastikan dekorasi tidak keluar dari batas */
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.8); /* Background putih terang untuk teks Windi & Ibam */
+        }
+        /* Font baru untuk nama di hero section */
+        .hero-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.5rem; /* Ukuran font lebih besar untuk kesan elegan */
+            line-height: 1;
+            color: black;
+        }
+        @media (min-width: 768px) {
+            .hero-title {
+                font-size: 7rem; /* Ukuran font lebih besar di desktop */
+            }
+        }
+        .section-title {
+            color: #b088f0; /* Warna ungu lavender lembut untuk judul */
+        }
+        .card {
+            background-color: white;
+            border-radius: 1.5rem; /* Sudut lebih membulat */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Bayangan lebih halus dan sedikit lebih dalam */
+            padding: 2.5rem; /* Padding lebih besar untuk ruang yang lebih lega */
+            border: 1px solid #f0e8e0; /* Border sangat tipis untuk definisi */
+        }
+        .btn-primary {
+            background-color: #c5a3ff; /* Ungu lavender untuk tombol */
+            color: white;
+            padding: 0.85rem 1.8rem; /* Padding lebih besar */
+            border-radius: 0.75rem; /* Sudut lebih membulat */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600; /* Lebih tebal */
+        }
+        .btn-primary:hover {
+            background-color: #a370e0; /* Ungu sedikit lebih gelap saat hover */
+            transform: translateY(-2px); /* Efek sedikit terangkat */
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 1rem;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0; /* Padding lebih besar */
+            border-bottom: 1px solid #eee;
+        }
+        .budget-item:last-child {
+            border-bottom: none;
+        }
+        .delete-btn {
+            background-color: #ef4444; /* Red-500 */
+            color: white;
+            padding: 0.3rem 0.6rem; /* Padding sedikit lebih besar */
+            border-radius: 0.35rem; /* Sudut lebih membulat */
+            font-size: 0.8rem; /* Ukuran font sedikit lebih besar */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .delete-btn:hover {
+            background-color: #dc2626; /* Red-600 */
+        }
+
+        /* Styling for the flower SVGs */
+        .decoration-svg {
+            position: absolute;
+            fill: black; /* Warna dekorasi hitam */
+            opacity: 0.7;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            pointer-events: none; /* Agar tidak mengganggu interaksi */
+        }
+
+        /* Specific flower styles */
+        .flower-1 {
+            width: 70px; height: 70px;
+            top: 10%; left: 5%;
+            transform: rotate(-15deg);
+        }
+        .flower-2 {
+            width: 60px; height: 60px;
+            bottom: 10%; right: 5%;
+            transform: rotate(20deg);
+        }
+        .flower-3 {
+            width: 80px; height: 80px;
+            top: 5%; right: 10%;
+            transform: rotate(5deg);
+        }
+        .flower-4 {
+            width: 65px; height: 65px;
+            bottom: 5%; left: 10%;
+            transform: rotate(-5deg);
+        }
+        .flower-5 {
+            width: 50px; height: 50px;
+            top: 30%; left: 20%;
+            transform: rotate(30deg);
+        }
+        .flower-6 {
+            width: 75px; height: 75px;
+            bottom: 25%; left: 25%;
+            transform: rotate(-25deg);
+        }
+        .flower-7 {
+            width: 55px; height: 55px;
+            top: 20%; right: 20%;
+            transform: rotate(-10deg);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3.5rem; /* Ukuran font lebih kecil di mobile */
+            }
+            .decoration-svg {
+                width: 40px;
+                height: 40px;
+                opacity: 0.5;
+            }
+            .flower-1 { top: 5%; left: 2%; }
+            .flower-2 { bottom: 5%; right: 2%; }
+            .flower-3 { top: 2%; right: 5%; }
+            .flower-4 { bottom: 2%; left: 5%; }
+            .flower-5 { top: 15%; left: 10%; }
+            .flower-6 { bottom: 15%; left: 12%; }
+            .flower-7 { top: 10%; right: 10%; }
+        }
+        /* Justify text for paragraphs in Kisah Kami section */
+        .card.text-justify p {
+            text-align: justify;
+            font-family: 'Lora', serif; /* Font baru untuk isi Kisah Kami */
+            line-height: 1.8; /* Spasi baris agar lebih mudah dibaca */
+        }
+        .names-at-end {
+            text-align: center;
+            margin-top: 2rem;
+            font-family: 'Great Vibes', cursive; /* Menggunakan font yang sama dengan judul utama */
+            font-size: 2rem; /* Ukuran font yang lebih besar untuk nama */
+            line-height: 1.2;
+            color: #b088f0; /* Warna ungu lavender lembut */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Hero Section -->
+    <section class="hero-section relative">
+        <div class="hero-overlay"></div>
+        <div class="relative z-10 p-4">
+            <h1 class="hero-title">Windi & Ibam</h1>
+        </div>
+        <!-- Flower Decorations (SVG) -->
+        <svg class="decoration-svg flower-1" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zM12 16c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M3.5 3.5l1.41 1.41M19.09 19.09l1.41 1.41M3.5 20.5l1.41-1.41M19.09 4.91l1.41-1.41"/>
+        </svg>
+        <svg class="decoration-svg flower-2" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zM12 16c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M3.5 3.5l1.41 1.41M19.09 19.09l1.41 1.41M3.5 20.5l1.41-1.41M19.09 4.91l1.41-1.41"/>
+        </svg>
+        <svg class="decoration-svg flower-3" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zM12 16c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M3.5 3.5l1.41 1.41M19.09 19.09l1.41 1.41M3.5 20.5l1.41-1.41M19.09 4.91l1.41-1.41"/>
+        </svg>
+        <svg class="decoration-svg flower-4" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zM12 16c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M3.5 3.5l1.41 1.41M19.09 19.09l1.41 1.41M3.5 20.5l1.41-1.41M19.09 4.91l1.41-1.41"/>
+        </svg>
+        <svg class="decoration-svg flower-5" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zM12 16c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M3.5 3.5l1.41 1.41M19.09 19.09l1.41 1.41M3.5 20.5l1.41-1.41M19.09 4.91l1.41-1.41"/>
+        </svg>
+        <svg class="decoration-svg flower-6" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zM12 16c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M3.5 3.5l1.41 1.41M19.09 19.09l1.41 1.41M3.5 20.5l1.41-1.41M19.09 4.91l1.41-1.41"/>
+        </svg>
+        <svg class="decoration-svg flower-7" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 3.87 3.13 7 7 7s7-3.13 7-7c0-3.87-3.13-7-7-7zM12 16c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M3.5 3.5l1.41 1.41M19.09 19.09l1.41 1.41M3.5 20.5l1.41-1.41M19.09 4.91l1.41-1.41"/>
+        </svg>
+    </section>
+
+    <!-- Kisah Kami Section -->
+    <section id="kisah-kami" class="py-16 px-4 md:px-8 bg-fdfaf6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 section-title">Kisah Kami</h2>
+            <div class="card text-justify">
+                <p class="text-lg mb-4">
+                    Kisah kami, sejujurnya, bukanlah drama percintaan yang meledak-ledak. Ia tumbuh pelan, perlahan merayap seperti akar yang mencari pijakan kuat, dari sebuah titik yang sangat biasa: bangku kuliah. Kami adalah teman sekelas, dua individu yang duduk berdampingan selama berjam-jam, namun anehnya, kami nyaris tak pernah saling sapa. Ada semacam penghalang tak terlihat, mungkin rasa canggung atau sekadar kesibukan masing-masing, yang membuat kami hanya sebatas "kenalan di kelas." Tapi, seperti yang sering dikatakan, takdir punya rencana sendiri, lebih indah dan tak terduga dari apa pun yang bisa kami bayangkan.
+                </p>
+                <p class="text-lg mb-4">
+                    Titik baliknya datang suatu malam yang biasa saja. Setelah riuhnya kelas mereda, dan sebagian besar mahasiswa sudah beranjak, hanya kami berdua yang tersisa. Entah dorongan dari mana, sebuah ajakan sederhana meluncur dari bibirku: "Mau beli minum, yuk?" Mungkin itu hanya basa-basi, tapi percayalah, momen itu adalah jembatan yang menghubungkan dua dunia yang sebelumnya berjalan paralel. Dari obrolan ringan tentang mata kuliah, dosen, hingga keluhan tentang tugas, kami mulai menemukan benang merah yang mengejutkan. Ada banyak kesamaan dalam selera humor, pandangan hidup, bahkan hal-hal kecil yang membuat kami tertawa lepas. Tawa kami seolah menjadi melodi pertama dalam simfoni yang baru dimulai.
+                </p>
+                <p class="text-lg mb-4">
+                    Tak lama berselang, pada hari Minggu yang cerah, sebuah ide muncul: jogging bersama. Kami memutuskan bertemu di sebuah tempat yang sangat familiar di Kota Bogor. Langit biru membentang luas, dan udara pagi terasa begitu segar. Setiap langkah yang kami ayunkan, setiap hembusan napas yang berpadu dengan irama jantung, terasa begitu syahdu. Kami saling bercerita tentang impian, ketakutan, dan kenangan masa kecil. Momen-momen kecil yang kami abadikan dalam foto-foto sederhana—senyum lebar, canda saat salah satu dari kami tersandung, atau sekadar tatapan mata yang bertemu—semuanya terasa begitu istimewa. Itu bukan sekadar jogging; itu adalah pagi di mana kami mulai saling mengenal lebih dalam. Malam harinya, petualangan kami berlanjut. Tanpa rencana, kami berakhir di bioskop, menonton film "Venom". Sebuah kencan spontan yang justru semakin merekatkan kami. Jujur saja, saat itu saya hanya menganggapnya sebagai teman bermain yang menyenangkan, teman baru yang menambah warna di hidup saya, tidak lebih dari itu.
+                </p>
+                <p class="text-lg mb-4">
+                    Namun, cinta punya jalur dan waktunya sendiri untuk tumbuh. Ia tak bisa dipaksa, melainkan bersemi perlahan, meresap seperti embun pagi yang membasahi kelopak bunga. Momen puncaknya tiba saat kami tenggelam dalam lautan tugas kuliah yang menumpuk. Hari-hari dan malam-malam kami habiskan bersama, berdiskusi, berdebat sehat, dan tentu saja, tertawa. Di tengah fokus pada materi pelajaran, saat mata kami bertemu dalam jeda penjelasan, sebuah perasaan baru bersemi, begitu halus namun kuat, merayap dan menenangkan seluruh sanubari. Itu bukan sekadar kagum, bukan hanya nyaman. Itu adalah rasa yang lebih dalam, sebuah kesadaran bahwa dia telah menempati ruang khusus di hati saya. Momen itulah yang mengubah segalanya. Dia bukan lagi sekadar teman; dia menjelma menjadi seseorang yang tak hanya berarti, melainkan telah menjadi bagian tak terpisahkan dari napas saya.
+                </p>
+                <p class="text-lg">
+                    Sejak saat itu, setiap hari terasa lebih bermakna. Kami mulai merajut impian bersama, berbagi rencana masa depan, bahkan yang paling kecil sekalipun. Kami saling mendukung dalam setiap langkah, merayakan keberhasilan sekecil apa pun, dan menjadi sandaran saat salah satu dari kami terpuruk. Meskipun ikrar suci lamaran belum terucap, kami berdua tahu betul bahwa ini adalah sebuah perjalanan yang panjang, sebuah komitmen yang kami bangun hari demi hari. Kami sedang berjuang bersama, menghadapi tantangan hidup, mengukir setiap fondasi dengan keringat dan tekad, demi membangun masa depan yang kami impikan. Setiap tawa, setiap pelukan hangat di saat lelah, dan setiap kata penyemangat adalah bukti nyata cinta kami yang terus berkembang, kian mendalam seiring berjalannya waktu.
+                </p>
+                <p class="text-lg">
+                    Kami saling mencintai apa adanya, setiap inci dari diri satu sama lain—kekuatan, kelemahan, impian, bahkan kebiasaan-kebiasaan kecil yang kadang konyol. Kami belajar menerima, memahami, dan terus tumbuh bersama. Harapan terbesar kami adalah bisa menua bersama, menikmati setiap detik kebahagiaan, dan menghadapi setiap badai kehidupan hingga akhir hayat. Ini bukan sekadar akhir dari sebuah fase pertemanan, melainkan awal dari babak baru yang lebih agung dalam kisah cinta kami, sebuah mahakarya yang akan terus kami tulis dengan tinta kasih sayang dan kesetiaan. Kami tidak sabar untuk menjalani setiap halaman, setiap tantangan, dan setiap kebahagiaan yang menanti di depan, bersama-sama, selamanya.
+                </p>
+                <div class="names-at-end">
+                    Windi Ayunda Febrianti <br>
+                    & <br>
+                    Taufan Ibramsyah Ponto
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Perencanaan Keuangan Section -->
+    <section id="keuangan" class="py-16 px-4 md:px-8 bg-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 section-title">Perencanaan Keuangan</h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Daftar Belanja & Anggaran -->
+                <div class="card text-left">
+                    <h3 class="text-2xl font-semibold mb-4 text-gray-800">Daftar Belanja & Anggaran</h3>
+                    <form id="budgetItemForm" class="mb-6">
+                        <div class="mb-4">
+                            <label for="itemName" class="block text-gray-700 text-sm font-bold mb-2">Nama Barang:</label>
+                            <input type="text" id="itemName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Contoh: Gaun Pengantin" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="itemCost" class="block text-gray-700 text-sm font-bold mb-2">Biaya (Rp):</label>
+                            <input type="number" id="itemCost" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" min="0" value="0" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Tambah Barang</button>
+                    </form>
+
+                    <div class="mb-6 mt-6">
+                        <h4 class="text-xl font-semibold mb-2">Daftar Barang:</h4>
+                        <ul id="budget-items-list" class="divide-y divide-gray-200">
+                            <!-- Budget items will be dynamically added here -->
+                        </ul>
+                    </div>
+
+                    <div class="text-right mt-4">
+                        <p class="text-xl font-bold">Total Anggaran: <span id="totalBudget">Rp 0</span></p>
+                    </div>
+                </div>
+
+                <!-- Tabungan Kami -->
+                <div class="card text-left">
+                    <h3 class="text-2xl font-semibold mb-4 text-gray-800">Tabungan Kami</h3>
+                    <div class="mb-4">
+                        <label for="currentSavings" class="block text-gray-700 text-sm font-bold mb-2">Jumlah Tabungan Saat Ini (Rp):</label>
+                        <input type="number" id="currentSavings" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" min="0" value="0">
+                    </div>
+                    <button id="updateSavingsBtn" class="btn-primary mb-6">Perbarui Tabungan</button>
+
+                    <div class="mt-4">
+                        <p class="text-xl font-bold mb-2">Total Tabungan: <span id="displaySavings">Rp 0</span></p>
+                        <p class="text-xl font-bold">Sisa Anggaran: <span id="remainingBudget">Rp 0</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 text-center">
+        <p>&copy; 2025 Windi & Ibam. Semua Hak Dilindungi.</p>
+        <p class="mt-2">Dibuat dengan ❤️ untuk hari istimewa kami.</p>
+    </footer>
+
+    <script>
+        // --- Financial Planning Logic ---
+        const budgetItemForm = document.getElementById('budgetItemForm');
+        const itemNameInput = document.getElementById('itemName');
+        const itemCostInput = document.getElementById('itemCost');
+        const budgetItemsList = document.getElementById('budget-items-list');
+        const totalBudgetSpan = document.getElementById('totalBudget');
+        const currentSavingsInput = document.getElementById('currentSavings');
+        const updateSavingsBtn = document.getElementById('updateSavingsBtn');
+        const displaySavingsSpan = document.getElementById('displaySavings');
+        const remainingBudgetSpan = document.getElementById('remainingBudget');
+
+        let totalBudget = 0;
+        let currentSavings = 0;
+
+        // Function to format number as Rupiah
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+
+        // Function to update budget display
+        function updateBudgetDisplay() {
+            totalBudgetSpan.textContent = formatRupiah(totalBudget);
+            updateRemainingBudget();
+        }
+
+        // Function to update savings display and remaining budget
+        function updateSavingsDisplay() {
+            displaySavingsSpan.textContent = formatRupiah(currentSavings);
+            updateRemainingBudget();
+        }
+
+        // Function to calculate and update remaining budget
+        function updateRemainingBudget() {
+            const remaining = currentSavings - totalBudget;
+            remainingBudgetSpan.textContent = formatRupiah(remaining);
+            // Optionally, change color based on remaining budget
+            if (remaining < 0) {
+                remainingBudgetSpan.classList.add('text-red-500');
+                remainingBudgetSpan.classList.remove('text-green-600');
+            } else {
+                remainingBudgetSpan.classList.add('text-green-600');
+                remainingBudgetSpan.classList.remove('text-red-500');
+            }
+        }
+
+        // Add budget item
+        budgetItemForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const itemName = itemNameInput.value;
+            const itemCost = parseFloat(itemCostInput.value);
+
+            if (itemName && !isNaN(itemCost) && itemCost >= 0) {
+                const listItem = document.createElement('li');
+                listItem.classList.add('budget-item');
+                listItem.innerHTML = `
+                    <span>${itemName}</span>
+                    <span>${formatRupiah(itemCost)}</span>
+                    <button class="delete-btn" data-cost="${itemCost}">Hapus</button>
+                `;
+                budgetItemsList.appendChild(listItem);
+
+                totalBudget += itemCost;
+                updateBudgetDisplay();
+
+                // Add event listener for delete button
+                listItem.querySelector('.delete-btn').addEventListener('click', function() {
+                    const deletedCost = parseFloat(this.dataset.cost);
+                    totalBudget -= deletedCost;
+                    listItem.remove();
+                    updateBudgetDisplay();
+                });
+
+                itemNameInput.value = '';
+                itemCostInput.value = 0;
+            }
+        });
+
+        // Update savings
+        updateSavingsBtn.addEventListener('click', function() {
+            const newSavings = parseFloat(currentSavingsInput.value);
+            if (!isNaN(newSavings) && newSavings >= 0) {
+                currentSavings += newSavings; // Add to existing savings
+                updateSavingsDisplay();
+                currentSavingsInput.value = 0; // Clear the input field
+            } else {
+                console.error("Input tabungan tidak valid.");
+            }
+        });
+
+        // Initial display update
+        updateBudgetDisplay();
+        updateSavingsDisplay();
+    </script>
+</body>
+</html>
